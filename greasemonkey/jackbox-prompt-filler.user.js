@@ -1,8 +1,13 @@
 // ==UserScript==
 // @name         Jackbox Prompt Filler
 // @namespace    jackbox-utils
-// @version      1.3.0
+// @version      1.3.1
 // @description  One click: submit 50 random prompts on the jackbox.tv add-prompt page, wait 4s, then press Done.
+// @author       isycat
+// @homepageURL  https://github.com/isycat/jackbox-utils
+// @supportURL   https://github.com/isycat/jackbox-utils/issues
+// @downloadURL  https://github.com/isycat/jackbox-utils/raw/refs/heads/main/greasemonkey/jackbox-prompt-filler.user.js
+// @updateURL    https://github.com/isycat/jackbox-utils/raw/refs/heads/main/greasemonkey/jackbox-prompt-filler.user.js
 // @match        *://jackbox.tv/*
 // @match        *://*.jackbox.tv/*
 // @grant        none
