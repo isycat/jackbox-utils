@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Jackbox Prompt Filler
 // @namespace    jackbox-utils
-// @version      1.2.0
+// @version      1.3.0
 // @description  One click: submit 50 random prompts on the jackbox.tv add-prompt page, wait 4s, then press Done.
 // @match        *://jackbox.tv/*
 // @match        *://*.jackbox.tv/*
@@ -19,10 +19,15 @@
     // the two-liner into the devtools console. Userscript sandboxing
     // (Tampermonkey/Greasemonkey isolated worlds) never touches it.
     function pageFill(pmts) {
-        pmts.sort(() => Math.random() - 0.5).slice(0, 50).forEach(text => {
-            document.getElementById("input-text-textarea").value = text;
-            document.getElementsByClassName("inlineSubmitButton")[0].click();
-        });
+        pmts
+            .map(text => ({ key: Math.random(), text }))
+            .sort((a, b) => a.key - b.key)
+            .slice(0, 50)
+            .map(({ text }) => text)
+            .forEach(text => {
+                document.getElementById("input-text-textarea").value = text;
+                document.getElementsByClassName("inlineSubmitButton")[0].click();
+            });
         setTimeout(() => {
             const done = document.querySelector('button.button_done[data-action="done"]');
             if (done) done.click();
