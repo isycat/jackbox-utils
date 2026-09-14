@@ -17,6 +17,13 @@
 (function () {
     'use strict';
 
+    // TODO: replace with the selector for prompts that have already been added.
+    const ADDED_PROMPT_SELECTOR = '.TODO-added-prompt';
+
+    const blurStyle = document.createElement('style');
+    blurStyle.textContent = `${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
+    document.head.appendChild(blurStyle);
+
     // Index 0 is Gen 1; regional forms sit with the generation that introduced them.
     const POKEMON_BY_GEN = [
         // Gen 1
