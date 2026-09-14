@@ -17,8 +17,8 @@
 (function () {
     'use strict';
 
-    // TODO: replace with the selector for prompts that have already been added.
-    const ADDED_PROMPT_SELECTOR = '.TODO-added-prompt';
+    // Buttons listing the prompts already added (clicking one removes it).
+    const ADDED_PROMPT_SELECTOR = '#promptsRegion > div > div > button';
 
     const blurStyle = document.createElement('style');
     blurStyle.textContent = `${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
