@@ -116,15 +116,17 @@
     ])];
 
     function fillPrompts(btn, prompts) {
+        // Only the label changes, so the Poké Ball icon stays put.
+        const label = btn.querySelector('.label');
         if (!prompts.length) {
-            btn.textContent = 'Nothing selected';
+            label.textContent = 'Nothing selected';
             // A run started in the meantime resets the label itself when it finishes.
-            setTimeout(() => { if (!btn.disabled) btn.textContent = 'Fill prompts'; }, 1500);
+            setTimeout(() => { if (!btn.disabled) label.textContent = 'Add Random'; }, 1500);
             return;
         }
 
         btn.disabled = true;
-        btn.textContent = 'Running…';
+        label.textContent = 'Running…';
 
         const s = document.createElement('script');
         s.textContent = '(' + pageFill.toString() + ')(' + JSON.stringify(prompts) + ');';
@@ -133,7 +135,7 @@
 
         setTimeout(() => {
             btn.disabled = false;
-            btn.textContent = 'Fill prompts';
+            label.textContent = 'Add Random';
         }, 4500);
     }
 
@@ -156,10 +158,21 @@
             .gens { padding: 0 0 4px 22px; }
             .gens input { width: 3.5em; font: inherit; }
             hr { margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,255,.2); }
+            .fill { display: flex; align-items: center; gap: 6px; }
+            .fill svg { flex: none; }
         </style>
         <div class="widget">
             <div class="buttons">
-                <button type="button" class="fill">Fill prompts</button>
+                <button type="button" class="fill">
+                    <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                        <path d="M1 12a11 11 0 0 1 22 0z" fill="#ee1515"/>
+                        <path d="M1 12a11 11 0 0 0 22 0z" fill="#fff"/>
+                        <path d="M1 12h22" stroke="#222" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="11" fill="none" stroke="#222" stroke-width="2"/>
+                        <circle cx="12" cy="12" r="3.5" fill="#fff" stroke="#222" stroke-width="2"/>
+                    </svg>
+                    <span class="label">Add Random</span>
+                </button>
                 <button type="button" class="toggle" title="Settings">▾</button>
             </div>
             <form hidden>
