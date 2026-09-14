@@ -20,11 +20,12 @@
     // Buttons listing the prompts already added (clicking one removes it).
     const ADDED_PROMPT_SELECTOR = '#promptsRegion > div > div > button';
 
-    // Toggled on <html> by the blur setting (not <body>, whose classes page code may reset).
-    const BLUR_CLASS = 'jackbox-prompt-filler-blur';
+    // Prompts are blurred unless the blur setting is off, which puts this class
+    // on <html> (not <body>, whose classes page code may reset).
+    const UNBLUR_CLASS = 'jackbox-prompt-filler-unblur';
 
     const blurStyle = document.createElement('style');
-    blurStyle.textContent = `.${BLUR_CLASS} ${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
+    blurStyle.textContent = `html:not(.${UNBLUR_CLASS}) ${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
     document.head.appendChild(blurStyle);
 
     // Index 0 is Gen 1; regional forms sit with the generation that introduced them.
@@ -190,7 +191,7 @@
         inputs.genTo.value = settings.genTo;
         inputs.genFrom.disabled = inputs.genTo.disabled = !settings.pokemon;
         inputs.blur.checked = settings.blur;
-        document.documentElement.classList.toggle(BLUR_CLASS, settings.blur);
+        document.documentElement.classList.toggle(UNBLUR_CLASS, !settings.blur);
     }
     renderSettings();
 
