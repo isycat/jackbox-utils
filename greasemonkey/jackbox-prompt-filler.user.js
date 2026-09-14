@@ -78,7 +78,7 @@
 
     // Fills in defaults and repairs anything invalid, whether it came from storage or the form.
     function normalizeSettings(raw) {
-        const s = { pokemon: true, moves: true, abilities: true, genFrom: 1, genTo: GEN_COUNT, blur: true, ...raw };
+        const s = { pokemon: true, moves: true, abilities: false, genFrom: 1, genTo: GEN_COUNT, blur: true, ...raw };
         const gen = (n, fallback) => (Number.isInteger(n) && n >= 1 && n <= GEN_COUNT ? n : fallback);
         const from = gen(s.genFrom, 1);
         const to = gen(s.genTo, GEN_COUNT);
