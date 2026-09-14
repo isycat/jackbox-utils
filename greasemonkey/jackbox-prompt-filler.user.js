@@ -20,8 +20,11 @@
     // Buttons listing the prompts already added (clicking one removes it).
     const ADDED_PROMPT_SELECTOR = '#promptsRegion > div > div > button';
 
+    // Toggled on <html> by the blur setting (not <body>, whose classes page code may reset).
+    const BLUR_CLASS = 'jackbox-prompt-filler-blur';
+
     const blurStyle = document.createElement('style');
-    blurStyle.textContent = `${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
+    blurStyle.textContent = `.${BLUR_CLASS} ${ADDED_PROMPT_SELECTOR} { filter: blur(6px); }`;
     document.head.appendChild(blurStyle);
 
     // Index 0 is Gen 1; regional forms sit with the generation that introduced them.
@@ -75,7 +78,7 @@
 
     // Fills in defaults and repairs anything invalid, whether it came from storage or the form.
     function normalizeSettings(raw) {
-        const s = { pokemon: true, moves: true, abilities: true, genFrom: 1, genTo: GEN_COUNT, ...raw };
+        const s = { pokemon: true, moves: true, abilities: true, genFrom: 1, genTo: GEN_COUNT, blur: true, ...raw };
         const gen = (n, fallback) => (Number.isInteger(n) && n >= 1 && n <= GEN_COUNT ? n : fallback);
         const from = gen(s.genFrom, 1);
         const to = gen(s.genTo, GEN_COUNT);
@@ -85,6 +88,7 @@
             abilities: Boolean(s.abilities),
             genFrom: Math.min(from, to),
             genTo: Math.max(from, to),
+            blur: Boolean(s.blur),
         };
     }
 
@@ -150,6 +154,7 @@
             label { display: block; padding: 4px 0; cursor: pointer; }
             .gens { padding: 0 0 4px 22px; }
             .gens input { width: 3.5em; font: inherit; }
+            hr { margin: 6px 0; border: none; border-top: 1px solid rgba(255,255,255,.2); }
         </style>
         <div class="widget">
             <div class="buttons">
@@ -164,13 +169,15 @@
                 </div>
                 <label><input type="checkbox" name="moves"> Moves</label>
                 <label><input type="checkbox" name="abilities"> Abilities</label>
+                <hr>
+                <label><input type="checkbox" name="blur"> Blur added prompts</label>
             </form>
         </div>`;
     document.body.appendChild(host);
 
     const fillBtn = root.querySelector('.fill');
     const form = root.querySelector('form');
-    const inputs = Object.fromEntries(['pokemon', 'moves', 'abilities', 'genFrom', 'genTo']
+    const inputs = Object.fromEntries(['pokemon', 'moves', 'abilities', 'genFrom', 'genTo', 'blur']
         .map(name => [name, root.querySelector(`[name="${name}"]`)]));
 
     let settings = loadSettings();
@@ -182,6 +189,8 @@
         inputs.genFrom.value = settings.genFrom;
         inputs.genTo.value = settings.genTo;
         inputs.genFrom.disabled = inputs.genTo.disabled = !settings.pokemon;
+        inputs.blur.checked = settings.blur;
+        document.documentElement.classList.toggle(BLUR_CLASS, settings.blur);
     }
     renderSettings();
 
@@ -192,6 +201,7 @@
             abilities: inputs.abilities.checked,
             genFrom: Number(inputs.genFrom.value),
             genTo: Number(inputs.genTo.value),
+            blur: inputs.blur.checked,
         });
         saveSettings(settings);
         renderSettings();
